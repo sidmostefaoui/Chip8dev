@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Vendor">
+      <UniqueIdentifier>{665785fd-5868-4fba-a9e4-7cb466ba2f3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vendor\fmt">
+      <UniqueIdentifier>{f9e5f166-1466-46cb-a5bf-cf5e15c02886}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Vendor\glad">
+      <UniqueIdentifier>{db564489-d9b7-4e2d-bc2b-0495a4c37cd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vendor\imgui">
+      <UniqueIdentifier>{b7942fad-3acc-4a70-b432-ca966ede64d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gui">
+      <UniqueIdentifier>{2f795c39-fdc0-4bda-b6aa-2bf3d28a78a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\chip8">
+      <UniqueIdentifier>{c4849d75-4033-472d-b703-97134ac629f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\gui">
+      <UniqueIdentifier>{f389aea4-0a4e-4a8e-bd63-4dd90eaf8bb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\chip8">
+      <UniqueIdentifier>{342e9670-1da1-4b07-b798-4f1add5c4149}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\src\fmt-9.1.0\src\format.cc">
+      <Filter>Vendor\fmt</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\src\glad.c">
+      <Filter>Vendor\glad</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\src\imgui-1.89.3\imgui.cpp">
+      <Filter>Vendor\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\src\imgui-1.89.3\imgui_draw.cpp">
+      <Filter>Vendor\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\src\imgui-1.89.3\imgui_tables.cpp">
+      <Filter>Vendor\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\src\imgui-1.89.3\imgui_widgets.cpp">
+      <Filter>Vendor\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\src\imgui-1.89.3\backends\imgui_impl_glfw.cpp">
+      <Filter>Vendor\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\src\imgui-1.89.3\backends\imgui_impl_opengl3.cpp">
+      <Filter>Vendor\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="chip8.cpp">
+      <Filter>Source Files\chip8</Filter>
+    </ClCompile>
+    <ClCompile Include="debugger.cpp">
+      <Filter>Source Files\chip8</Filter>
+    </ClCompile>
+    <ClCompile Include="window.cpp">
+      <Filter>Source Files\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="gl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="window.h">
+      <Filter>Header Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="debugger.h">
+      <Filter>Header Files\chip8</Filter>
+    </ClInclude>
+    <ClInclude Include="chip8.h">
+      <Filter>Header Files\chip8</Filter>
+    </ClInclude>
+    <ClInclude Include="gl.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="roms\Soccer.ch8">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="roms\Pong.ch8">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="roms\Pong2.ch8">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="cpp.hint" />
+  </ItemGroup>
+</Project>
