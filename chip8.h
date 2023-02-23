@@ -46,10 +46,7 @@ public:
 	Chip8(const std::string& rom);
 	void emulate_cycle();
 	void update_pressed_keys(const Keyboard& keys);
-	const uint8_t* framebuffer_data() const;
-	int framebuffer_w() const;
-	int framebuffer_h() const;
-	bool should_render() const;
+	const Framebuffer& framebuffer() const;
 
 private:
 	friend class Debugger;
@@ -105,8 +102,7 @@ private:
 	uint8_t dt; // delay timer register
 	Opcode opcode_;
 	Keyboard keyboard;
-	Framebuffer framebuffer;
-	bool render;
+	Framebuffer framebuffer_;
 };
 
 }

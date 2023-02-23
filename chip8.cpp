@@ -10,7 +10,7 @@ namespace chip8dev
 
 	Chip8::Chip8(const std::string& rom)
 		: memory(), stack(), V(), I(), pc(0x200), sp(0), st(60), dt(60),
-			opcode_(), keyboard(), framebuffer(), render(false)
+			opcode_(), keyboard(), framebuffer_()
 	{
 		constexpr std::array<uint8_t, 80> fontset = {
 			0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -47,19 +47,9 @@ namespace chip8dev
 		keyboard = new_keyboard;
 	}
 
-	const uint8_t* Chip8::framebuffer_data() const
+	const Framebuffer& Chip8::framebuffer() const
 	{
-		return framebuffer[0].data();
-	}
-
-	int Chip8::framebuffer_w() const
-	{
-		return static_cast<int>(framebuffer[0].size());
-	}
-
-	int Chip8::framebuffer_h() const
-	{
-		return static_cast<int>(framebuffer.size());
+		return framebuffer_;
 	}
 
 	void Chip8::emulate_cycle()
@@ -75,11 +65,6 @@ namespace chip8dev
 		uint8_t hi = memory[pc];
 		uint8_t lo = memory[static_cast<size_t>(pc) + 1];
 		return { hi, lo };
-	}
-
-	bool Chip8::should_render() const
-	{
-		return render;
 	}
 
 	enum class Instruction {
@@ -218,10 +203,9 @@ namespace chip8dev
 		{
 			for (size_t x = 0; x < 64; x++)
 			{
-				framebuffer[y][x] = false;
+				framebuffer_[y][x] = 0;
 			}
 		}
-		render = true;
 		pc += 2;
 		std::cout << "instruction: 00E0 cls\n";
 	}
@@ -449,7 +433,7 @@ namespace chip8dev
 					size_t x = (static_cast<size_t>(Vx) + col) % 64;
 					size_t y = (static_cast<size_t>(Vy) + row) % 32;
 
-					uint8_t& px = framebuffer[y][x]; // framebuffer is ordered row first so [y][x] is (x, y)
+					uint8_t& px = framebuffer_[y][x]; // framebuffer is ordered row first so [y][x] is (x, y)
 					uint8_t px_old = px;
 
 					px ^= bits[col];  // update new pixel
@@ -462,7 +446,6 @@ namespace chip8dev
 				}
 			}
 
-			render = true;
 			pc += 2;
 			std::cout << "instruction: Dxyn drw Vx, Vy, n\n";
 	}

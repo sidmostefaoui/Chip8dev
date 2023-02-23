@@ -4,6 +4,7 @@
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
 #include <fmt/format.h>
+#include "gl.h"
 
 namespace chip8dev::gui
 {
@@ -24,8 +25,8 @@ namespace chip8dev::gui
         glfwSetErrorCallback(glfw_error_callback);
 
         const char* glsl_version = "#version 130";
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
         handle = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
@@ -39,6 +40,8 @@ namespace chip8dev::gui
         glfwSwapInterval(1);
 
         gladLoadGL();
+        glEnable(GL_DEBUG_OUTPUT);
+        glDebugMessageCallback(MessageCallback, 0);
 
         ImGui::CreateContext();
         io = &ImGui::GetIO();

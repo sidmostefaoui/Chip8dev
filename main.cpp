@@ -29,20 +29,12 @@ int main()
     auto window = chip8dev::gui::Window("CHIP8-DEV", width, height);
     auto chip8 = chip8dev::Chip8("roms/Pong.ch8");
 
-    auto tex = chip8dev::gl::Texture::from_framebuffer(chip8.framebuffer_data(),
-        chip8.framebuffer_w(), chip8.framebuffer_h());
-   
-
     while (!window.should_close())
     {
         glfwPollEvents();
         chip8.emulate_cycle();
-        
-        if (chip8.should_render())
-        {
-            tex.update_data(chip8.framebuffer_data(),
-                chip8.framebuffer_w(), chip8.framebuffer_h());
-        }
+       
+        auto tex = chip8dev::Texture::from_framebuffer(chip8.framebuffer());
 
 
         // Start the Dear ImGui frame
@@ -52,12 +44,12 @@ int main()
 
         ImGui::Begin("OpenGL Texture Text");
         {
-            ImGui::Text("pointer = %p", tex.id());
-            ImGui::Text("size = %d x %d", tex.w(), tex.h());
+            ImGui::Text("pointer = %p", tex.id);
+            ImGui::Text("size = %d x %d", tex.w, tex.h);
             ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
 
-            ImGui::Image((void*)(intptr_t)tex.id(), ImVec2((float)tex.w() * 8,
-                (float)tex.h() * 8));
+            ImGui::Image((void*)(intptr_t)tex.id, ImVec2((float)tex.w * 8,
+                (float)tex.h * 8));
         }
         ImGui::End();
 
