@@ -472,7 +472,6 @@
     <ClCompile Include="vendor\src\imgui-1.89.3\imgui_draw.cpp" />
     <ClCompile Include="vendor\src\imgui-1.89.3\imgui_tables.cpp" />
     <ClCompile Include="vendor\src\imgui-1.89.3\imgui_widgets.cpp" />
-    <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="assert.h" />
@@ -482,7 +481,6 @@
     <ClInclude Include="App.h" />
     <ClInclude Include="RegistersWindow.h" />
     <ClInclude Include="StackWindow.h" />
-    <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

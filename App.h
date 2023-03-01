@@ -1,7 +1,7 @@
 #pragma once
-#include "window.h"
 #include "chip8.h"
-#include <memory>
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
 
 namespace gui
 {
@@ -9,14 +9,14 @@ namespace gui
 	{
 	public:
 		static auto create(const std::string& title, int w, int h) -> void;
+		static auto shutdown() -> void;
 		static auto start_frame() -> void;
 		static auto end_frame() -> void;
-		static auto window() -> Window&;
 		static auto running() -> bool;
 		static auto input() -> emu::Keyboard;
 		
 	private:
-		static std::unique_ptr<Window> window_;
+		static GLFWwindow* wnd_handle_;
 	};
 
 }

@@ -1,9 +1,10 @@
-
 #include "chip8.h"
 #include "App.h"
 #include "FramebufferWindow.h"
 #include "RegistersWindow.h"
 #include "StackWindow.h"
+
+#include <imgui/imgui.h>
 
 int main()
 {

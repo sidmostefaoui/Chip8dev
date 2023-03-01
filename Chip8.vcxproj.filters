@@ -69,9 +69,6 @@
     <ClCompile Include="chip8.cpp">
       <Filter>Source Files\chip8</Filter>
     </ClCompile>
-    <ClCompile Include="window.cpp">
-      <Filter>Source Files\gui</Filter>
-    </ClCompile>
     <ClCompile Include="gl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -89,9 +86,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="window.h">
-      <Filter>Header Files\gui</Filter>
-    </ClInclude>
     <ClInclude Include="chip8.h">
       <Filter>Header Files\chip8</Filter>
     </ClInclude>

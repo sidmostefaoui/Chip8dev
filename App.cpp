@@ -1,19 +1,77 @@
 #include "App.h"
+#include "assert.h"
+
 #include <glad/glad.h>
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
-#include "assert.h"
+#include <fmt/format.h>
+#include <stdexcept>
+
+void glfw_error_callback(int error, const char* description)
+{
+	fmt::print("GLFW ERROR {}: {}\n", error, description);
+	__debugbreak();
+}
+
+void GLAPIENTRY gl_message_callback(GLenum, GLenum type, GLuint, GLenum severity,
+									GLsizei, const GLchar* message, const void*)
+{
+	printf("GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+		(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
+		type, severity, message);
+	__debugbreak();
+}
 
 namespace gui
 {
-	std::unique_ptr<Window> App::window_ = nullptr;
+	GLFWwindow* App::wnd_handle_ = nullptr;
 
 	void App::create(const std::string& title, int w, int h)
 	{
 		CHIP8DEV_ASSERT(w > 0);
 		CHIP8DEV_ASSERT(h > 0);
-		window_ = std::make_unique<Window>(title, w, h);
+
+		if (!glfwInit())
+		{
+			throw std::runtime_error("Error Initializing GLFW");
+		}
+
+		glfwSetErrorCallback(glfw_error_callback);
+
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+		wnd_handle_ = glfwCreateWindow(w, h, title.c_str(), NULL, NULL);
+
+		if (!wnd_handle_)
+		{
+			throw std::runtime_error("Could Not Create GLFW Window");
+		}
+
+		glfwMakeContextCurrent(wnd_handle_);
+		glfwSwapInterval(0); // V-Sync
+
+		gladLoadGL();
+		glEnable(GL_DEBUG_OUTPUT);
+		glDebugMessageCallback(gl_message_callback, 0);
+
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		ImGui::StyleColorsDark();
+
+		ImGui_ImplGlfw_InitForOpenGL(wnd_handle_, true);
+		ImGui_ImplOpenGL3_Init("#version 130");
+	}
+
+	auto App::shutdown() -> void
+	{
+		ImGui_ImplOpenGL3_Shutdown();
+		ImGui_ImplGlfw_Shutdown();
+		ImGui::DestroyContext();
+		glfwDestroyWindow(wnd_handle_);
+		glfwTerminate();
 	}
 
 
@@ -29,25 +87,23 @@ namespace gui
 	{
 		ImGui::Render();
 
-		auto clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-		auto [display_w, display_h] = window_->framebuffer_size();
-
+		int display_w = 0;
+		int display_h = 0;
+		glfwGetFramebufferSize(wnd_handle_, &display_w, &display_h);
 		glViewport(0, 0, display_w, display_h);
+
+		static auto clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 		glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w,
 			clear_color.z * clear_color.w, clear_color.w);
 		glClear(GL_COLOR_BUFFER_BIT);
+
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-		window_->swap_buffers();
+		glfwSwapBuffers(wnd_handle_);
 	}
 
-	Window& App::window()
-	{
-		CHIP8DEV_ASSERT(window_);
-		return *window_;
-	}
 	auto App::running() -> bool
 	{
-		return !window_->should_close();
+		return !glfwWindowShouldClose(wnd_handle_);
 	}
 
 	/* FIX LATER: imgui reading KEY 4 as Apostrophe*/
