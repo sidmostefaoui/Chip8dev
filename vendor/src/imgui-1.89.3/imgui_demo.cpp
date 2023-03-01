@@ -5720,7 +5720,7 @@ static void ShowDemoWindowInputs()
         // Display inputs submitted to ImGuiIO
         IMGUI_DEMO_MARKER("Inputs & Focus/Inputs");
         ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-        if (ImGui::TreeNode("Inputs"))
+        if (ImGui::TreeNode("Inputs")) 
         {
             HelpMarker(
                 "This is a simplified view. See more detailed input state:\n"

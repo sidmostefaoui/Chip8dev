@@ -5,7 +5,7 @@
 #include <functional>
 #include <string>
 
-namespace chip8dev::gui
+namespace gui
 {
 
 	class Window

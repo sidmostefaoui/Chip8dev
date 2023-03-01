@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 
-namespace chip8dev
+namespace emu
 {
 
 	Chip8::Chip8(const std::string& rom)
@@ -42,29 +42,22 @@ namespace chip8dev
 		srand(clock()); 
 	}
 
-	void Chip8::update_pressed_keys(const Keyboard& new_keyboard)
+	void Chip8::update_keyboard(const Keyboard& new_keyboard)
 	{
 		keyboard = new_keyboard;
 	}
 
-	const Framebuffer& Chip8::framebuffer() const
-	{
-		return framebuffer_;
-	}
-
 	void Chip8::emulate_cycle()
 	{
-		opcode_ = fetch();
-		execute(decode(opcode_), opcode_);
-		if (dt > 0) dt--;
-		if (st > 0) st--;
-	}
-
-	Opcode Chip8::fetch()
-	{
+		/* fetch instruction */
 		uint8_t hi = memory[pc];
 		uint8_t lo = memory[static_cast<size_t>(pc) + 1];
-		return { hi, lo };
+		opcode_ = { hi, lo };
+
+		execute(decode(opcode_), opcode_);
+
+		if (dt > 0) dt--;
+		if (st > 0) st--;
 	}
 
 	enum class Instruction {
@@ -203,7 +196,7 @@ namespace chip8dev
 		{
 			for (size_t x = 0; x < 64; x++)
 			{
-				framebuffer_[y][x] = 0;
+				framebuffer_[y * 64 + x] = 0;
 			}
 		}
 		pc += 2;
@@ -396,53 +389,42 @@ namespace chip8dev
 		std::cout << "instruction: Cxkk rnd Vx, kk\n";
 	}
 
-	/* helper function for drw_vx_vy:
-		extracts all bits in a byte into array of bools */
-	std::array<uint8_t, 8> unpack_byte(uint8_t byte)
-	{
-		std::array<uint8_t, 8> bits = {};
-		bits[0] = byte & 0x80;
-		bits[1] = byte & 0x40;
-		bits[2] = byte & 0x20;
-		bits[3] = byte & 0x10;
-		bits[4] = byte & 0x08;
-		bits[5] = byte & 0x04;
-		bits[6] = byte & 0x02;
-		bits[7] = byte & 0x01;
-		return bits;
-	}
-
 	/* draws sprite at offset I in memory on screen at (x, y)
 		http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#2.4 */
 	void Chip8::drw_vx_vy(const Opcode opcode)
-		{
+	{
 			V[0xF] = 0; // Vf is zero if no pixels are erased
 			uint8_t n = opcode.n(); // sprite size in bytes
-			uint8_t Vx = V[opcode.x()]; // x starting pos for drawing is value of Vx
-			uint8_t Vy = V[opcode.y()]; // y starting pos for drawing is value of Vy
+			size_t Vx = V[opcode.x()]; // x starting pos for drawing is value of Vx
+			size_t Vy = V[opcode.y()]; // y starting pos for drawing is value of Vy
 
 			for (uint8_t row = 0; row < n; row++) // number of rows is size of sprite
 			{
+				/* each byte from sprite goes in respective row */
 				size_t offset = static_cast<size_t>(I) + row;
-				uint8_t byte = memory[offset];  // each byte from sprite starts in new row
+				uint8_t byte = memory[offset];  
 
-				std::array<uint8_t, 8> bits = unpack_byte(byte); // each bit is a pixel
-
-				for (uint8_t col = 0; col < 8; col++) // each pixel goes in new column
+				for (uint8_t col = 0; col < 8; col++)
 				{
-					size_t x = (static_cast<size_t>(Vx) + col) % 64;
-					size_t y = (static_cast<size_t>(Vy) + row) % 32;
+					/* modulo is used so x and y wrap around framebuffer edges */
+					size_t x = (Vx + col) % 64;
+					size_t y = (Vy + row) % 32;
 
-					uint8_t& px = framebuffer_[y][x]; // framebuffer is ordered row first so [y][x] is (x, y)
-					uint8_t px_old = px;
+					/* extract bit for respective col from byte */
+					uint8_t bit = (byte & (0x80 >> col)) >> (7 - col); 
 
-					px ^= bits[col];  // update new pixel
+					/* new pixel value is bit from framebuffer or (bitwise) bit from sprite */
+					uint8_t px_old = framebuffer_[y * 64 + x];
+					uint8_t px_new = px_old ^ bit;
 					
 					// if a pixel is erased Vf is set to 1
-					if (px_old == 1 && px == 0)
+					if (px_old == 1 && px_new == 0)
 					{
 						V[0xF] = 1;
 					}
+
+					/* update pixel value in framebuffer */
+					framebuffer_[y * 64 + x] = px_new;
 				}
 			}
 
@@ -453,7 +435,7 @@ namespace chip8dev
 	/* skip next instruction if keys[Vx] is pressed */
 	void Chip8::skp_vx(const Opcode opcode)
 	{
-		if (keyboard[V[opcode.x()]] == true)
+		if (keyboard[V[opcode.x()]])
 		{
 			pc += 2;
 		}
@@ -464,7 +446,7 @@ namespace chip8dev
 	/* skip next instruction if keys[Vx] is not pressed */
 	void Chip8::sknp_vx(const Opcode opcode)
 	{
-		if (keyboard[V[opcode.x()]] == false)
+		if (!keyboard[V[opcode.x()]])
 		{
 			pc += 2;
 		}
@@ -485,7 +467,7 @@ namespace chip8dev
 	{
 		for (uint8_t i = 0; i < keyboard.size(); i++)
 		{
-			if (keyboard[i] == true)
+			if (keyboard[i] )
 			{
 				V[opcode.x()] = i;
 				pc += 2;

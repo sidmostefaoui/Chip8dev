@@ -6,7 +6,7 @@
 #include <fmt/format.h>
 #include "gl.h"
 
-namespace chip8dev::gui
+namespace gui
 {
 
     void glfw_error_callback(int error, const char* description)
@@ -29,7 +29,7 @@ namespace chip8dev::gui
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-        handle = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+        handle = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 
         if (!handle)
         {
@@ -37,12 +37,13 @@ namespace chip8dev::gui
         }
 
         glfwMakeContextCurrent(handle);
-        glfwSwapInterval(1);
+        glfwSwapInterval(0); // V-Sync
 
         gladLoadGL();
         glEnable(GL_DEBUG_OUTPUT);
-        glDebugMessageCallback(MessageCallback, 0);
+        glDebugMessageCallback(gl::MessageCallback, 0);
 
+        IMGUI_CHECKVERSION();
         ImGui::CreateContext();
         io = &ImGui::GetIO();
 

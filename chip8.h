@@ -3,7 +3,14 @@
 #include<array>
 #include<string>
 
-namespace chip8dev
+namespace gui
+{
+	class RegistersWindow;
+	class FramebufferWindow;
+	class StackWindow;
+}
+
+namespace emu
 {
 
 struct Opcode // chip8 opcodes are 2 bytes long
@@ -36,22 +43,22 @@ struct Opcode // chip8 opcodes are 2 bytes long
 };
 
 enum class Instruction;
-using Framebuffer = std::array<std::array<uint8_t, 64>, 32>;
+using Framebuffer = std::array<uint8_t, 32 * 64>;
 using Keyboard = std::array<bool, 16>;
-
 
 class Chip8
 {
 public:
 	Chip8(const std::string& rom);
 	void emulate_cycle();
-	void update_pressed_keys(const Keyboard& keys);
-	const Framebuffer& framebuffer() const;
+	void update_keyboard(const Keyboard& keys);
+
+	friend class gui::RegistersWindow;
+	friend class gui::FramebufferWindow;
+	friend class gui::StackWindow;
 
 private:
-	friend class Debugger;
 	/* mapping binary opcode code to instructions */
-	Opcode fetch();
 	Instruction decode(const Opcode opcode);
 	void execute(const Instruction inst, const Opcode op);
 
