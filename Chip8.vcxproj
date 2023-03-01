@@ -462,6 +462,7 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RegistersWindow.cpp" />
+    <ClCompile Include="SettingsWindow.cpp" />
     <ClCompile Include="StackWindow.cpp" />
     <ClCompile Include="vendor\src\fmt-9.1.0\src\format.cc" />
     <ClCompile Include="vendor\src\glad.c" />
@@ -478,9 +479,12 @@
     <ClInclude Include="FramebufferWindow.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="RegistersWindow.h" />
+    <ClInclude Include="SettingsWindow.h" />
     <ClInclude Include="StackWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
+    <None Include="imgui.ini" />
     <None Include="roms\Pong.ch8" />
     <None Include="roms\Pong2.ch8" />
     <None Include="roms\Soccer.ch8" />

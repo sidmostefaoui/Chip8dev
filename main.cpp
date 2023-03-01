@@ -47,5 +47,7 @@ int main()
         gui::App::end_frame();
     }
 
+    gui::App::shutdown();
+
     return 0;
 }

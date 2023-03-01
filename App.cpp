@@ -68,6 +68,7 @@ void App::create(const std::string& title, int w, int h)
 
 auto App::shutdown() -> void
 {
+	ASSERT(wnd_handle_);
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
@@ -104,6 +105,7 @@ auto App::end_frame() -> void
 
 auto App::running() -> bool
 {
+	ASSERT(wnd_handle_);
 	return !glfwWindowShouldClose(wnd_handle_);
 }
 

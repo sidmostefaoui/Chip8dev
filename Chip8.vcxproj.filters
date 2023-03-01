@@ -81,6 +81,9 @@
     <ClCompile Include="StackWindow.cpp">
       <Filter>Source Files\gui</Filter>
     </ClCompile>
+    <ClCompile Include="SettingsWindow.cpp">
+      <Filter>Source Files\gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chip8.h">
@@ -101,6 +104,9 @@
     <ClInclude Include="StackWindow.h">
       <Filter>Header Files\gui</Filter>
     </ClInclude>
+    <ClInclude Include="SettingsWindow.h">
+      <Filter>Header Files\gui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="roms\Soccer.ch8">
@@ -112,5 +118,7 @@
     <None Include="roms\Pong2.ch8">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="cpp.hint" />
+    <None Include="imgui.ini" />
   </ItemGroup>
 </Project>
