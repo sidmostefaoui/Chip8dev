@@ -459,7 +459,6 @@
   <ItemGroup>
     <ClCompile Include="chip8.cpp" />
     <ClCompile Include="FramebufferWindow.cpp" />
-    <ClCompile Include="gl.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RegistersWindow.cpp" />
@@ -474,16 +473,14 @@
     <ClCompile Include="vendor\src\imgui-1.89.3\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="assert.h" />
+    <ClInclude Include="Assert.h" />
     <ClInclude Include="chip8.h" />
     <ClInclude Include="FramebufferWindow.h" />
-    <ClInclude Include="gl.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="RegistersWindow.h" />
     <ClInclude Include="StackWindow.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="cpp.hint" />
     <None Include="roms\Pong.ch8" />
     <None Include="roms\Pong2.ch8" />
     <None Include="roms\Soccer.ch8" />

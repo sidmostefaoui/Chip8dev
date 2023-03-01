@@ -69,9 +69,6 @@
     <ClCompile Include="chip8.cpp">
       <Filter>Source Files\chip8</Filter>
     </ClCompile>
-    <ClCompile Include="gl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="App.cpp">
       <Filter>Source Files\gui</Filter>
     </ClCompile>
@@ -89,13 +86,10 @@
     <ClInclude Include="chip8.h">
       <Filter>Header Files\chip8</Filter>
     </ClInclude>
-    <ClInclude Include="gl.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="App.h">
       <Filter>Header Files\gui</Filter>
     </ClInclude>
-    <ClInclude Include="assert.h">
+    <ClInclude Include="Assert.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FramebufferWindow.h">
@@ -118,6 +112,5 @@
     <None Include="roms\Pong2.ch8">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

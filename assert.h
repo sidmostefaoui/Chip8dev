@@ -2,7 +2,7 @@
 
 #ifndef NDEBUG
 
-#define CHIP8DEV_ASSERT(x) if(!(x)) __debugbreak();
+#define ASSERT(x) if(!(x)) __debugbreak();
 
 #endif // DEBUG
 
