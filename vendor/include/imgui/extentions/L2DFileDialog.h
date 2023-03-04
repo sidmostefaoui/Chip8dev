@@ -32,6 +32,7 @@ namespace FileDialog {
 		OpenFile,
 		SelectFolder
 	};
+
 	enum class FileDialogSortOrder {
 		Up,
 		Down,
@@ -41,7 +42,7 @@ namespace FileDialog {
 	static bool file_dialog_open = false;
 	static FileDialogType file_dialog_open_type = FileDialogType::OpenFile;
 
-	void ShowFileDialog(bool* open, char* buffer, unsigned int buffer_size, FileDialogType type = FileDialogType::OpenFile) {
+	void ShowFileDialog(bool* open, std::string& buffer, FileDialogType type = FileDialogType::OpenFile) {
 		static int file_dialog_file_select_index = 0;
 		static int file_dialog_folder_select_index = 0;
 		static std::string file_dialog_current_path = std::filesystem::current_path().string();
@@ -58,7 +59,7 @@ namespace FileDialog {
 		if (open) {
 			// Check if there was already something in the buffer. If so, try to use that path (if it exists).
 			// If it doesn't exist, just put them into the current path.
-			if (!initial_path_set && strlen(buffer) > 0) {
+			if (!initial_path_set && buffer.size() > 0) {
 				auto path = std::filesystem::path(buffer);
 				if (std::filesystem::is_directory(path)) {
 					file_dialog_current_path = buffer;
@@ -327,7 +328,8 @@ namespace FileDialog {
 						strcpy_s(file_dialog_error, "Error: You must select a folder!");
 					}
 					else {
-						strcpy(buffer, (file_dialog_current_path + (file_dialog_current_path.back() == '\\' ? "" : "\\") + file_dialog_current_folder).c_str());
+						buffer = file_dialog_current_path + (file_dialog_current_path.back() == '\\' ? "" : "\\") + file_dialog_current_folder;
+						//strcpy(buffer, (file_dialog_current_path + (file_dialog_current_path.back() == '\\' ? "" : "\\") + file_dialog_current_folder).c_str());
 						strcpy_s(file_dialog_error, "");
 						reset_everything();
 					}
@@ -337,7 +339,8 @@ namespace FileDialog {
 						strcpy_s(file_dialog_error, "Error: You must select a file!");
 					}
 					else {
-						strcpy(buffer, (file_dialog_current_path + (file_dialog_current_path.back() == '\\' ? "" : "\\") + file_dialog_current_file).c_str());
+						buffer = file_dialog_current_path + (file_dialog_current_path.back() == '\\' ? "" : "\\") + file_dialog_current_file;
+						//strcpy(buffer, (file_dialog_current_path + (file_dialog_current_path.back() == '\\' ? "" : "\\") + file_dialog_current_file).c_str());
 						strcpy_s(file_dialog_error, "");
 						reset_everything();
 					}

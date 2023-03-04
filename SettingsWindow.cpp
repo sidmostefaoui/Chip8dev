@@ -6,14 +6,12 @@ namespace gui
 {
 
 SettingsWindow::SettingsWindow(Settings& settings, emu::Chip8& chip8)
-	: chip8_(chip8), settings_(settings)
+	: chip8_(chip8), settings_(settings), file_dialog_path_(settings.rom)
 {
-		::strcpy_s(file_dialog_path_, settings.rom.data());
 }
 
 auto SettingsWindow::render() -> void
 {
-	static bool new_rom = false;
 
     ImGui::Begin("Settings");
     {
@@ -28,9 +26,9 @@ auto SettingsWindow::render() -> void
 		if (FileDialog::file_dialog_open)
 		{
 			FileDialog::ShowFileDialog(&FileDialog::file_dialog_open, file_dialog_path_,
-				1024, FileDialog::FileDialogType::OpenFile);
+				FileDialog::FileDialogType::OpenFile);
 
-			if (std::string(file_dialog_path_) != settings_.rom)
+			if (settings_.rom != file_dialog_path_)
 			{
 				settings_.rom = file_dialog_path_;
 				chip8_ = emu::Chip8(settings_.rom);

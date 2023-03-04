@@ -26,6 +26,6 @@ namespace gui
 	private:
 		emu::Chip8& chip8_;
 		Settings& settings_;
-		char file_dialog_path_[1024];
+		std::string file_dialog_path_;
 	};
 }
