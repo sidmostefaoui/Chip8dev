@@ -3,17 +3,19 @@
 #include "FramebufferWindow.h"
 #include "RegistersWindow.h"
 #include "StackWindow.h"
-
-#include <imgui/imgui.h>
+#include "SettingsWindow.h"
 
 int main()
 {
     gui::App::create("CHUP8-DEV", 1280, 720);
 
-    auto chip8 = emu::Chip8("roms/Pong.ch8");
-    auto framebuffer_wnd = gui::FramebufferWindow(chip8);
+    gui::Settings settings = { {255.0f, 255.0f, 255.0f}, "roms\\trip8.ch8" };
+    auto chip8 = emu::Chip8(settings.rom);
+
+    auto framebuffer_wnd = gui::FramebufferWindow(chip8, settings);
     auto registers_wnd = gui::RegistersWindow(chip8);
     auto stack_wnd = gui::StackWindow(chip8);
+    auto settings_wnd = gui::SettingsWindow(settings, chip8);
 
     while (gui::App::running())
     {
@@ -22,27 +24,10 @@ int main()
         chip8.update_keyboard(gui::App::input());
         chip8.emulate_cycle();
 
-        ImGui::Begin("Settings");
-        {
-
-            ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
-
-            ImGui::Text("Keys down:");
-
-            for (ImGuiKey key = ImGuiKey_NamedKey_BEGIN; key < ImGuiKey_NamedKey_END; key = (ImGuiKey)(key + 1))
-            {
-                if (!ImGui::IsKeyDown(key))
-                    continue;
-
-                ImGui::SameLine();
-                ImGui::Text("\"%s\" %d", ImGui::GetKeyName(key), key);
-            }
-        }
-        ImGui::End();
-
         framebuffer_wnd.render();
         registers_wnd.render();
         stack_wnd.render();
+        settings_wnd.render();
 
         gui::App::end_frame();
     }

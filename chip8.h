@@ -8,6 +8,7 @@ namespace gui
 	class RegistersWindow;
 	class FramebufferWindow;
 	class StackWindow;
+	class SettingsWindow;
 }
 
 namespace emu
@@ -56,6 +57,7 @@ public:
 	friend class gui::RegistersWindow;
 	friend class gui::FramebufferWindow;
 	friend class gui::StackWindow;
+	friend class gui::SettingsWindow;
 
 private:
 	/* mapping binary opcode code to instructions */

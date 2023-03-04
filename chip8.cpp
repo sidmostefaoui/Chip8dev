@@ -34,7 +34,6 @@ namespace emu
 		// load fontset into memory
 		std::copy(std::begin(fontset), std::end(fontset), std::begin(memory));
 		
-		// load program into memory
 		auto f = std::basic_ifstream<uint8_t>(rom, std::ios::binary);
 		if (!f) throw std::runtime_error("Cannot Load Program");
 		for (int i = 0x200; f.read(memory.data() + i, 1); i++);

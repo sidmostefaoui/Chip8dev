@@ -7,5 +7,5 @@
 #endif // DEBUG
 
 #ifdef NDEBUG
-#define CHIP8DEV_ASSERT(x) (void)0;
+#define ASSERT(x) (void)0;
 #endif // NDEBUG

@@ -4,8 +4,8 @@
 
 namespace gui
 {
-	FramebufferWindow::FramebufferWindow(const emu::Chip8& chip8)
-		: chip8_(chip8), tex_id_(), tex_zoom_(8), tex_w_(64), tex_h_(32)
+	FramebufferWindow::FramebufferWindow(const emu::Chip8& chip8, const Settings& settings)
+		: settings_(settings), chip8_(chip8), tex_id_(), tex_zoom_(8), tex_w_(64), tex_h_(32)
 	{
 		glGenTextures(1, &tex_id_);
 		glBindTexture(GL_TEXTURE_2D, tex_id_);
@@ -20,7 +20,6 @@ namespace gui
 
 	FramebufferWindow::~FramebufferWindow()
 	{
-		glBindTexture(GL_TEXTURE_2D, 0);
 		glDeleteTextures(1, &tex_id_);
 	}
 	
@@ -30,16 +29,16 @@ namespace gui
 		glBindTexture(GL_TEXTURE_2D, tex_id_);
 
 		/* create rgb buffer array from framebuffer */
-		std::vector<uint8_t> rgb;
+		std::vector<float> rgb;
 		rgb.reserve((size_t)tex_w_ * tex_h_ * 3);
 
 		for (auto& pixel : chip8_.framebuffer_)
 		{
 			if (pixel == 1) //WHITE
 			{
-				rgb.push_back(255); // RED
-				rgb.push_back(255); // GREEN
-				rgb.push_back(255); // BLUE
+				rgb.push_back(settings_.color.r); // RED
+				rgb.push_back(settings_.color.g); // GREEN
+				rgb.push_back(settings_.color.b); // BLUE
 			}
 			else // BLACK
 			{
@@ -50,11 +49,8 @@ namespace gui
 		}
 
 		/* copy rgb buffer array to texture data */
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tex_w_, tex_h_,
-			0, GL_RGB, GL_UNSIGNED_BYTE, rgb.data());
-
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, tex_w_, tex_h_, 0, GL_RGB, GL_FLOAT, rgb.data());
 		glBindTexture(GL_TEXTURE_2D, 0);
-
 	}
 
 	auto FramebufferWindow::render() -> void
