@@ -84,6 +84,9 @@
     <ClCompile Include="SettingsWindow.cpp">
       <Filter>Source Files\gui</Filter>
     </ClCompile>
+    <ClCompile Include="asm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chip8.h">
@@ -106,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="SettingsWindow.h">
       <Filter>Header Files\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="asm.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

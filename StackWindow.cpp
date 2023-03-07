@@ -21,13 +21,23 @@ namespace gui
                 ImGui::TableSetupColumn("value");
                 ImGui::TableHeadersRow();
 
-                for (int row = 0; row < chip8_.stack.size(); row++)
+                for (uint8_t row = 0; row < 16; row++)
                 {
                     ImGui::TableNextRow();
+
                     ImGui::TableSetColumnIndex(0);
-                    ImGui::Text(fmt::format("{:#04x}", row).c_str());
+                    auto adr = 0x50 + row * 2;
+                    static auto adr_str = std::string(10, ' ');
+                    fmt::format_to(adr_str.begin(), "{:#04x}", adr);
+                    ImGui::Text(adr_str.c_str());
+
                     ImGui::TableSetColumnIndex(1);
-                    ImGui::Text(fmt::format("{:#06x}", chip8_.stack[row]).c_str());
+                    uint16_t hi = chip8_.memory[adr];
+                    uint16_t lo = chip8_.memory[static_cast<size_t>(adr)];
+                    uint16_t val = (hi << 8) | lo;
+                    static auto val_str = std::string(10, ' ');
+                    fmt::format_to(val_str.begin(), "{:#06x}", val);
+                    ImGui::Text(val_str.c_str());
                 }
 
                 ImGui::EndTable();

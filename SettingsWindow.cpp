@@ -25,8 +25,7 @@ auto SettingsWindow::render() -> void
 
 		if (FileDialog::file_dialog_open)
 		{
-			FileDialog::ShowFileDialog(&FileDialog::file_dialog_open, file_dialog_path_,
-				FileDialog::FileDialogType::OpenFile);
+			FileDialog::ShowFileDialog(file_dialog_path_);
 
 			if (settings_.rom != file_dialog_path_)
 			{

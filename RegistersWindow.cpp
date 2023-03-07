@@ -1,6 +1,7 @@
 #include "RegistersWindow.h"
 #include "imgui/imgui.h"
 #include "fmt/format.h"
+#include "asm.h"
 
 namespace gui
 {
@@ -55,6 +56,10 @@ namespace gui
 		ImGui::Text(fmt::format("pc: {:#06x}", chip8_.pc).c_str());
 
 		ImGui::Text(fmt::format("sp: {:#04x}", chip8_.sp).c_str());
+
+		ImGui::Text(fmt::format("opcode: {:#06x}", chip8_.opcode_.data()).c_str());
+		ImGui::Text(fmt::format("asm: {}",
+			Asm::disassemble(chip8_.opcode_, chip8_.inst_)).c_str());
 
 
 		ImGui::End();

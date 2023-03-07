@@ -11,7 +11,7 @@
 void glfw_error_callback(int error, const char* description)
 {
 	fmt::print("GLFW ERROR {}: {}\n", error, description);
-	__debugbreak();
+	ASSERT(true);
 }
 
 void GLAPIENTRY gl_message_callback(GLenum, GLenum type, GLuint, GLenum severity,
@@ -20,7 +20,7 @@ void GLAPIENTRY gl_message_callback(GLenum, GLenum type, GLuint, GLenum severity
 	printf("GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
 		(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
 		type, severity, message);
-	__debugbreak();
+	ASSERT(true);
 }
 
 namespace gui
