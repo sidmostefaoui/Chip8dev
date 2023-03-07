@@ -47,9 +47,8 @@ namespace emu
 		keyboard = new_keyboard;
 	}
 
-	void Chip8::emulate_cycle()
+	void Chip8::emulate_cycle(const float delta_time)
 	{
-
 		/* fetch instruction */
 		uint8_t hi = memory[pc];
 		uint8_t lo = memory[static_cast<size_t>(pc) + 1];
@@ -57,9 +56,15 @@ namespace emu
 		inst_ = Asm::decode(opcode_);
 		execute();
 
-		if (dt > 0) dt--;
-		if (st > 0) st--;
-		
+		static float counter = 0;
+		counter += delta_time;
+
+		if (counter >= 1.0f / 60)
+		{
+			if (dt > 0) dt--;
+			if (st > 0) st--;
+			counter = 0;
+		}
 	}
 
 	void Chip8::execute()

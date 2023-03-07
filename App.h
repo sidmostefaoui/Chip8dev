@@ -2,6 +2,8 @@
 #include "chip8.h"
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
+#include <miniaudio/miniaudio.h>
+
 
 namespace gui
 {
@@ -12,11 +14,14 @@ namespace gui
 		static auto shutdown() -> void;
 		static auto start_frame() -> void;
 		static auto end_frame() -> void;
-		static auto running() -> bool;
+		static auto is_running() -> bool;
+		static auto delta_time() -> float;
 		static auto input() -> emu::Keyboard;
+		static auto beep() -> void;
 		
 	private:
 		static GLFWwindow* wnd_handle_;
+		static ma_engine audio_engine_;
 	};
 
 }

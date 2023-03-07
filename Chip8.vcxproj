@@ -473,6 +473,7 @@
     <ClCompile Include="vendor\src\imgui-1.89.3\imgui_draw.cpp" />
     <ClCompile Include="vendor\src\imgui-1.89.3\imgui_tables.cpp" />
     <ClCompile Include="vendor\src\imgui-1.89.3\imgui_widgets.cpp" />
+    <ClCompile Include="vendor\src\miniaudio-0.11.11\miniaudio.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="asm.h" />

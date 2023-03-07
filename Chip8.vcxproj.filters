@@ -37,6 +37,9 @@
     <Filter Include="Header Files\chip8">
       <UniqueIdentifier>{342e9670-1da1-4b07-b798-4f1add5c4149}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Vendor\miniaudio">
+      <UniqueIdentifier>{2f515a38-57d9-4a6a-9e05-e085d57e6c78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -86,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="asm.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\src\miniaudio-0.11.11\miniaudio.c">
+      <Filter>Vendor\miniaudio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

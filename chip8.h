@@ -22,7 +22,7 @@ class Chip8
 {
 public:
 	Chip8(const std::string& rom);
-	void emulate_cycle();
+	void emulate_cycle(const float delta_time);
 	void update_keyboard(const Keyboard& keys);
 
 	friend class gui::RegistersWindow;

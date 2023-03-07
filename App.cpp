@@ -5,13 +5,14 @@
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
+
 #include <fmt/format.h>
 #include <stdexcept>
 
 void glfw_error_callback(int error, const char* description)
 {
 	fmt::print("GLFW ERROR {}: {}\n", error, description);
-	ASSERT(true);
+	ASSERT(false);
 }
 
 void GLAPIENTRY gl_message_callback(GLenum, GLenum type, GLuint, GLenum severity,
@@ -20,22 +21,24 @@ void GLAPIENTRY gl_message_callback(GLenum, GLenum type, GLuint, GLenum severity
 	printf("GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
 		(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
 		type, severity, message);
-	ASSERT(true);
+	ASSERT(false);
 }
 
 namespace gui
 {
 
 GLFWwindow* App::wnd_handle_ = nullptr;
+ma_engine App::audio_engine_ = {};
 
 void App::create(const std::string& title, int w, int h)
 {
 	ASSERT(w > 0);
 	ASSERT(h > 0);
 
+	/* Initialize GLFW */
 	if (!glfwInit())
 	{
-		throw std::runtime_error("Error Initializing GLFW");
+		throw std::runtime_error("Failed to initialize GLFW");
 	}
 
 	glfwSetErrorCallback(glfw_error_callback);
@@ -48,27 +51,37 @@ void App::create(const std::string& title, int w, int h)
 
 	if (!wnd_handle_)
 	{
-		throw std::runtime_error("Could Not Create GLFW Window");
+		throw std::runtime_error("Failed to create window");
 	}
 
 	glfwMakeContextCurrent(wnd_handle_);
 	glfwSwapInterval(0); // V-Sync
 
+	/* initialize OpenGL */
 	gladLoadGL();
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(gl_message_callback, 0);
 
+	/* initialize ImGui */
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGui::StyleColorsDark();
-
 	ImGui_ImplGlfw_InitForOpenGL(wnd_handle_, true);
 	ImGui_ImplOpenGL3_Init("#version 130");
+
+	/* initialize miniaudio */
+	ma_result result = ma_engine_init(NULL, &audio_engine_);
+	if (result != MA_SUCCESS)
+	{
+		throw std::runtime_error("Failed to initialize audio engine");
+	}
+
 }
 
 auto App::shutdown() -> void
 {
 	ASSERT(wnd_handle_);
+	ma_engine_uninit(&audio_engine_);
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
@@ -103,10 +116,15 @@ auto App::end_frame() -> void
 	glfwSwapBuffers(wnd_handle_);
 }
 
-auto App::running() -> bool
+auto App::is_running() -> bool
 {
 	ASSERT(wnd_handle_);
 	return !glfwWindowShouldClose(wnd_handle_);
+}
+
+auto App::delta_time() -> float
+{
+	return ImGui::GetIO().DeltaTime;
 }
 
 /* FIX LATER: imgui reading KEY 4 as Apostrophe*/
@@ -150,6 +168,12 @@ auto App::input() -> emu::Keyboard
 	}
 
 	return keyboard;
+}
+
+auto App::beep() -> void
+{
+	ma_engine_play_sound(&audio_engine_, "beep.wav", NULL);
+
 }
 
 }

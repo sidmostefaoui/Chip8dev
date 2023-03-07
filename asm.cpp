@@ -160,7 +160,7 @@ namespace Asm
 			disassembly =  fmt::format("ld V{}, [I]", opcode.x());
 			break;
 		default:
-			ASSERT(true);
+			ASSERT(false);
 		}
 
 		return disassembly;
